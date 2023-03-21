@@ -1,23 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from 'react';
+import ReviewsList from './components/ReviewsList';
+import Post from './components/Post';
+import ModalPost from './components/ModalPost';
+import { ContextProvider } from './context/Context';
 
 function App() {
+  const [showModal, setShowModal] = useState(false);
+  const [reviewVisibleEnModal, setReviewVisibleEnModal] = useState(null);
+ 
+  const mostrarModal = (review) => {
+    setReviewVisibleEnModal(review)
+    setShowModal(true)
+  }
+
+  const ocultarModal = () => setShowModal(false)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ContextProvider>
+        <Post mostrarModal={mostrarModal}/>
+        <ReviewsList mostrarModal={mostrarModal}/>
+        <ModalPost modalVisible={showModal} review={reviewVisibleEnModal} ocultarModal={ocultarModal}/>
+      </ContextProvider>
     </div>
   );
 }
